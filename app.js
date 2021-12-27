@@ -39,7 +39,4 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
 
 app.use(errors());
 
-app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Сервер запущен на порту ${PORT}`);
-});
+app.listen(PORT, () => { });

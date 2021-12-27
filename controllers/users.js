@@ -37,7 +37,6 @@ function createUser(req, res, next) {
       email,
       password: hash,
     }))
-    // eslint-disable-next-line no-underscore-dangle
     .then((user) => res.send(hidePassword(user._doc)))
     .catch((err) => {
       if (err.name === 'ValidationError') {
