@@ -10,6 +10,7 @@ const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { ERROR } = require('./utils/consts');
 const NotFoundError = require('./errors/not-found-error');
+const {limiter} = require('./middlewares/rateLimit');
 
 const { PORT = 3000, DB, NODE_ENV } = process.env;
 
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
 app.use(helmet());
+app.use(limiter);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
