@@ -27,8 +27,6 @@ app.post('/signin', celebrate({
   }),
 }), login);
 
-app.post('/signout', logout);
-
 app.post('/signup', celebrate({
   body: Joi.object().keys({
     name: Joi.string().optional().min(2).max(30),
@@ -41,6 +39,8 @@ app.use(auth);
 
 app.use('/users', require('./routes/users'));
 app.use('/movies', require('./routes/movies'));
+
+app.post('/signout', logout);
 
 mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
