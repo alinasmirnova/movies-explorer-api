@@ -32,6 +32,7 @@ app.post('/signup', celebrate({
 app.use(auth);
 
 app.use('/users', require('./routes/users'));
+app.use('/movies', require('./routes/movies'));
 
 mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
