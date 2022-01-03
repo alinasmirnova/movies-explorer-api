@@ -10,7 +10,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { ERROR } = require('./utils/consts');
 const NotFoundError = require('./errors/not-found-error');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, DB, NODE_ENV } = process.env;
 
 const app = express();
 
@@ -42,7 +42,7 @@ app.use('/movies', require('./routes/movies'));
 
 app.post('/signout', logout);
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+mongoose.connect(NODE_ENV === 'production' ? DB : 'mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
 });
 
