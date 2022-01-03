@@ -93,7 +93,7 @@ function login(req, res, next) {
     .catch(next);
 }
 
-function logout(req, res, next) {
+function logout(req, res) {
   res.cookie('jwt', '', {
     maxAge: 0,
     httpOnly: true,
