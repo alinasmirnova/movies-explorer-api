@@ -93,9 +93,18 @@ function login(req, res, next) {
     .catch(next);
 }
 
+function logout(req, res, next) {
+  res.cookie('jwt', '', {
+    maxAge: 0,
+    httpOnly: true,
+    sameSite: 'Strict',
+  }).end();
+}
+
 module.exports = {
   findCurrentUser,
   createUser,
   updateUser,
   login,
+  logout,
 };

@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { celebrate, Joi, errors } = require('celebrate');
 require('dotenv').config();
-const { login, createUser } = require('./controllers/users');
+const { login, createUser, logout } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 
 const { PORT = 3000 } = process.env;
@@ -20,6 +20,8 @@ app.post('/signin', celebrate({
     password: Joi.string().required().min(8),
   }),
 }), login);
+
+app.post('/signout', logout);
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
