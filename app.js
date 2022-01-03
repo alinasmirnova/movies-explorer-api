@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { celebrate, Joi, errors } = require('celebrate');
+const helmet = require('helmet');
 require('dotenv').config();
 const { login, createUser, logout } = require('./controllers/users');
 const auth = require('./middlewares/auth');
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
+app.use(helmet());
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
