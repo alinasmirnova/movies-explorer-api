@@ -4,7 +4,8 @@ const NotFoundError = require('../errors/not-found-error');
 const Movie = require('../models/movie');
 
 function findMovies(req, res, next) {
-  Movie.find({ })
+  const owner = req.user._id;
+  Movie.find({ owner })
     .then((movies) => res.send(movies))
     .catch(next);
 }
