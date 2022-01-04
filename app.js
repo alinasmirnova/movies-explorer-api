@@ -6,7 +6,6 @@ const { errors } = require('celebrate');
 const helmet = require('helmet');
 require('dotenv').config();
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { ERROR } = require('./utils/consts');
 const { limiter } = require('./middlewares/rateLimit');
 
 const { PORT = 3000, DB, NODE_ENV } = process.env;
@@ -31,17 +30,6 @@ app.use(errorLogger);
 
 app.use(errors());
 
-app.use((err, req, res, next) => {
-  const { statusCode = ERROR, message } = err;
-
-  res
-    .status(statusCode)
-    .send({
-      message: statusCode === ERROR
-        ? `На сервере произошла ошибка: ${message}`
-        : message,
-    });
-  next();
-});
+app.use(require('./middlewares/errorWrapper'));
 
 app.listen(PORT, () => { });
