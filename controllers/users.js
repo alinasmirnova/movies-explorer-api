@@ -42,7 +42,7 @@ function createUser(req, res, next) {
       if (err.name === 'ValidationError') {
         throw new BadRequestError(`Переданы неверные данные для создания пользователя: ${err.message}`);
       }
-      if (err.name === 'MongoServerError' && err.code === 11000) {
+      if (err.code === 11000) {
         throw new ConflictError('Пользователь уже существует');
       }
 
@@ -63,6 +63,9 @@ function updateUser(req, res, next) {
       return res.send(user);
     })
     .catch((err) => {
+      if (err.code === 11000) {
+        throw new ConflictError('Данный email принадлежит другому пользователю');
+      }
       if (err.name === 'ValidationError') {
         throw new BadRequestError(`Переданы неверные данные для редактирования данных пользователя: ${err.message}`);
       }
