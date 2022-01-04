@@ -1,5 +1,7 @@
 const { celebrate, Joi } = require('celebrate');
-const router = require('express').Router();
+const express = require('express');
+
+const router = express.Router();
 const {
   findCurrentUser,
   updateUser,
@@ -14,4 +16,4 @@ router.patch('/me', celebrate({
   }),
 }), updateUser);
 
-module.exports = router;
+module.exports = express.Router().use('/users', router);

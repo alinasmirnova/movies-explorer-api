@@ -1,5 +1,7 @@
 const { celebrate, Joi } = require('celebrate');
-const router = require('express').Router();
+const express = require('express');
+
+const router = express.Router();
 const {
   createMovie,
   findMovies,
@@ -31,4 +33,4 @@ router.delete('/:id', celebrate({
   }),
 }), deleteMovie);
 
-module.exports = router;
+module.exports = express.Router().use('/movies', router);
