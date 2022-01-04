@@ -2,6 +2,12 @@ const AccessDeniedError = require('../errors/access-denied-error');
 const BadRequestError = require('../errors/bad-request-error');
 const NotFoundError = require('../errors/not-found-error');
 const Movie = require('../models/movie');
+const {
+  buildMovieCreationErrorMsg,
+  MOVIE_NOT_FOUND_MSG,
+  ANOTHER_USER_CARD_DELETE_MSG,
+  WRONG_ID_FORMAT_MSG,
+} = require('../utils/consts');
 
 function findMovies(req, res, next) {
   const owner = req.user._id;
@@ -43,7 +49,7 @@ function createMovie(req, res, next) {
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new BadRequestError(`Переданы неверные данные для создания фильма: ${err.message}`);
+        throw new BadRequestError(buildMovieCreationErrorMsg(err));
       }
       throw err;
     })
@@ -54,10 +60,10 @@ function deleteMovie(req, res, next) {
   Movie.findById(req.params.id)
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError('Фильм не найден');
+        throw new NotFoundError(MOVIE_NOT_FOUND_MSG);
       }
       if (movie.owner._id.toString() !== req.user._id) {
-        throw new AccessDeniedError('Нельзя удалять фильмы других пользователей');
+        throw new AccessDeniedError(ANOTHER_USER_CARD_DELETE_MSG);
       }
 
       return Movie.deleteOne({ id: movie._id });
@@ -65,7 +71,7 @@ function deleteMovie(req, res, next) {
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BadRequestError('Неверный формат id фильма');
+        throw new BadRequestError(WRONG_ID_FORMAT_MSG);
       }
       throw err;
     })

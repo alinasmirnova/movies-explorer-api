@@ -1,4 +1,4 @@
-const { ERROR } = require('../utils/consts');
+const { ERROR, buildServerErrorMsg } = require('../utils/consts');
 
 module.exports = (err, req, res, next) => {
   const { statusCode = ERROR, message } = err;
@@ -7,7 +7,7 @@ module.exports = (err, req, res, next) => {
     .status(statusCode)
     .send({
       message: statusCode === ERROR
-        ? `На сервере произошла ошибка: ${message}`
+        ? buildServerErrorMsg(err)
         : message,
     });
   next();

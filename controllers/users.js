@@ -5,6 +5,13 @@ const ConflictError = require('../errors/conflict-error');
 const NotFoundError = require('../errors/not-found-error');
 const UnauthorizedError = require('../errors/unauthorized-error');
 const User = require('../models/user');
+const {
+  USER_NOT_FOUND_MSG,
+  buildUserCreationErrorMsg,
+  buildUserEditingErrorMsg,
+  USER_EXISTS_MSG,
+  EMAIL_ALREADY_EXISTS_MSG,
+} = require('../utils/consts');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -12,7 +19,7 @@ function findCurrentUser(req, res, next) {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundError(USER_NOT_FOUND_MSG);
       }
       return res.send(user);
     })
@@ -40,10 +47,10 @@ function createUser(req, res, next) {
     .then((user) => res.send(hidePassword(user._doc)))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new BadRequestError(`Переданы неверные данные для создания пользователя: ${err.message}`);
+        throw new BadRequestError(buildUserCreationErrorMsg(err));
       }
       if (err.code === 11000) {
-        throw new ConflictError('Пользователь уже существует');
+        throw new ConflictError(USER_EXISTS_MSG);
       }
 
       throw err;
@@ -58,16 +65,16 @@ function updateUser(req, res, next) {
   User.findByIdAndUpdate(id, { name, email }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundError(USER_NOT_FOUND_MSG);
       }
       return res.send(user);
     })
     .catch((err) => {
       if (err.code === 11000) {
-        throw new ConflictError('Данный email принадлежит другому пользователю');
+        throw new ConflictError(EMAIL_ALREADY_EXISTS_MSG);
       }
       if (err.name === 'ValidationError') {
-        throw new BadRequestError(`Переданы неверные данные для редактирования данных пользователя: ${err.message}`);
+        throw new BadRequestError(buildUserEditingErrorMsg(err));
       }
       throw err;
     })

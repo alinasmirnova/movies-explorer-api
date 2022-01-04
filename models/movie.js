@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { buildInvalidUrlMsg } = require('../utils/consts');
 const { linkRegex } = require('../utils/regex');
 
 const movieSchema = mongoose.Schema({
@@ -29,7 +30,7 @@ const movieSchema = mongoose.Schema({
       validator(v) {
         return linkRegex.test(v);
       },
-      message: (props) => `${props.value} не является корректным URL`,
+      message: (props) => buildInvalidUrlMsg(props.value),
     },
   },
   trailer: {
@@ -39,7 +40,7 @@ const movieSchema = mongoose.Schema({
       validator(v) {
         return linkRegex.test(v);
       },
-      message: (props) => `${props.value} не является корректным URL`,
+      message: (props) => buildInvalidUrlMsg(props.value),
     },
   },
   thumbnail: {
@@ -49,7 +50,7 @@ const movieSchema = mongoose.Schema({
       validator(v) {
         return linkRegex.test(v);
       },
-      message: (props) => `${props.value} не является корректным URL`,
+      message: (props) => buildInvalidUrlMsg(props.value),
     },
   },
   owner: {
