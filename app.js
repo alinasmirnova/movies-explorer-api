@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -11,6 +12,18 @@ const { limiter } = require('./middlewares/rateLimit');
 const { PORT = 3000, DB, NODE_ENV } = process.env;
 
 const app = express();
+
+const whitelist = ['http://localhost:3000', 'http://localhost:3001', 'http://asmirnova.movies.api.nomoredomains.rocks', 'https://localhost:3000', 'https://asmirnova.movies.api.nomoredomains.rocks', undefined];
+app.use(cors({
+  origin: function checkOrigin(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error(`Not allowed by CORS: ${origin}`));
+    }
+  },
+  credentials: true,
+}));
 
 app.use(cookieParser());
 app.use(bodyParser.json());
