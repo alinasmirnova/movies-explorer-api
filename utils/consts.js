@@ -9,11 +9,11 @@ const MOVIE_NOT_FOUND_MSG = 'Фильм не найден';
 const ANOTHER_USER_CARD_DELETE_MSG = 'Нельзя удалять фильмы других пользователей';
 const WRONG_ID_FORMAT_MSG = 'Неверный формат id';
 const USER_NOT_FOUND_MSG = 'Пользователь не найден';
-const USER_EXISTS_MSG = 'Пользователь уже существует';
+const USER_EXISTS_MSG = 'Пользователь с таким email уже существует';
 const EMAIL_ALREADY_EXISTS_MSG = 'Данный email принадлежит другому пользователю';
-const AUTH_REQUIRED_MSG = 'Необходима авторизация';
+const AUTH_REQUIRED_MSG = 'При авторизации произошла ошибка. Токен не передан или передан не в том формате';
 const INVALID_EMAIL_MSG = 'Некорректный email';
-const INVALID_EMAIL_OR_PASSWORD_MSG = 'Неправильные почта или пароль';
+const INVALID_EMAIL_OR_PASSWORD_MSG = 'Вы ввели неправильный логин или пароль';
 const RESOURCE_NOT_FOUND_MSG = 'Ресурс не найден';
 
 function buildMovieCreationErrorMsg(err) {
@@ -21,15 +21,15 @@ function buildMovieCreationErrorMsg(err) {
 }
 
 function buildUserCreationErrorMsg(err) {
-  return `Переданы неверные данные для создания пользователя: ${err.message}`;
+  return `При регистрации пользователя произошла ошибка`;
 }
 
 function buildUserEditingErrorMsg(err) {
-  return `Переданы неверные данные для редактирования данных пользователя: ${err.message}`;
+  return `При обновлении профиля произошла ошибка`;
 }
 
 function buildServerErrorMsg(err) {
-  return `На сервере произошла ошибка: ${err.message}`;
+  return `На сервере произошла ошибка`;
 }
 
 function buildInvalidUrlMsg(value) {
