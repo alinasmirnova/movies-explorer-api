@@ -66,7 +66,7 @@ function deleteMovie(req, res, next) {
         throw new AccessDeniedError(ANOTHER_USER_CARD_DELETE_MSG);
       }
 
-      return Movie.deleteOne({ id: movie._id });
+      return Movie.deleteOne({ _id: movie._id });
     })
     .then((movie) => res.send(movie))
     .catch((err) => {
